@@ -29,7 +29,7 @@ Or download from [Periphery releases](https://github.com/peripheryapp/periphery/
 ### Option 1: Build from Source
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/periphery-mcp-server.git
+git clone https://github.com/zyntx-lab/periphery-mcp-server.git
 cd periphery-mcp-server
 swift build -c release
 ```
