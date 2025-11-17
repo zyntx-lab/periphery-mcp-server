@@ -35,69 +35,71 @@ echo ""
 echo "📝 Updating server.json with hash..."
 cat > server.json << EOF
 {
-  "\$schema": "https://registry.modelcontextprotocol.io/schema/v1/server.schema.json",
+  "\$schema": "https://static.modelcontextprotocol.io/schemas/2025-09-29/server.schema.json",
   "name": "io.github.zyntx-lab/periphery-mcp-server",
-  "displayName": "Periphery Code Audit",
   "description": "Swift code analysis with Periphery - detect unused code and improve code quality",
-  "homepage": "https://github.com/zyntx-lab/periphery-mcp-server",
-  "license": "MIT",
-  "vendor": {
-    "name": "Zyntx Lab",
-    "url": "https://github.com/zyntx-lab"
-  },
-  "sourceRepository": {
+  "version": "${VERSION}",
+  "repository": {
     "type": "git",
-    "url": "https://github.com/zyntx-lab/periphery-mcp-server.git"
+    "url": "https://github.com/${REPO}.git"
   },
-  "categories": [
-    "code-analysis",
-    "development-tools"
-  ],
-  "capabilities": {
-    "tools": [
-      {
-        "name": "check_periphery_installed",
-        "description": "Verify Periphery CLI is installed and accessible"
-      },
-      {
-        "name": "get_periphery_version",
-        "description": "Get the installed version of Periphery"
-      },
-      {
-        "name": "scan_project",
-        "description": "Run a basic Periphery scan on a project"
-      },
-      {
-        "name": "scan_with_config",
-        "description": "Run Periphery scan using a YAML configuration file"
-      },
-      {
-        "name": "analyze_unused_imports",
-        "description": "Focus specifically on detecting unused imports"
-      },
-      {
-        "name": "find_redundant_public",
-        "description": "Identify public declarations that could be internal"
-      },
-      {
-        "name": "scan_with_options",
-        "description": "Advanced scanning with custom Periphery flags"
-      }
-    ]
-  },
-  "runtime": {
-    "type": "binary",
-    "platform": "macos",
-    "architecture": "arm64"
-  },
-  "distributions": [
+  "websiteUrl": "https://github.com/${REPO}",
+  "packages": [
     {
-      "type": "github-release",
+      "registryType": "mcpb",
       "identifier": "https://github.com/${REPO}/releases/download/v${VERSION}/periphery-mcp-server",
-      "sha256": "${SHA256}",
-      "platform": "darwin-arm64"
+      "version": "${VERSION}",
+      "fileSha256": "${SHA256}",
+      "transport": {
+        "type": "stdio"
+      },
+      "runtimeHint": "binary"
     }
-  ]
+  ],
+  "_meta": {
+    "io.modelcontextprotocol.registry/publisher-provided": {
+      "displayName": "Periphery Code Audit",
+      "license": "MIT",
+      "categories": ["code-analysis", "development-tools"],
+      "capabilities": {
+        "tools": [
+          {
+            "name": "check_periphery_installed",
+            "description": "Verify Periphery CLI is installed and accessible"
+          },
+          {
+            "name": "get_periphery_version",
+            "description": "Get the installed version of Periphery"
+          },
+          {
+            "name": "scan_project",
+            "description": "Run a basic Periphery scan on a project"
+          },
+          {
+            "name": "scan_with_config",
+            "description": "Run Periphery scan using a YAML configuration file"
+          },
+          {
+            "name": "analyze_unused_imports",
+            "description": "Focus specifically on detecting unused imports"
+          },
+          {
+            "name": "find_redundant_public",
+            "description": "Identify public declarations that could be internal"
+          },
+          {
+            "name": "scan_with_options",
+            "description": "Advanced scanning with custom Periphery flags"
+          }
+        ]
+      },
+      "platform": "darwin-arm64",
+      "vendor": {
+        "name": "Zyntx Lab",
+        "url": "https://github.com/zyntx-lab"
+      }
+    }
+  }
 }
 EOF
 
