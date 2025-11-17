@@ -58,7 +58,7 @@ Or download from [Periphery releases](https://github.com/peripheryapp/periphery/
 
 ```bash
 # Clone the repository
-git clone https://github.com/YOUR_USERNAME/periphery-mcp-server.git
+it clone https://github.com/zyntx-lab/periphery-mcp-server.git
 cd periphery-mcp-server
 
 # Build release version
@@ -87,7 +87,7 @@ Skip system installation and use the full path in your configuration (see Config
 
 ### Alternative: Download Pre-built Binary
 
-Download the latest binary from [Releases](https://github.com/YOUR_USERNAME/periphery-mcp-server/releases) and follow Option A or B above.
+Download the latest binary from [Releases](https://github.com/zyntx-lab/periphery-mcp-server/releases) and place it in your PATH and follow option A or B above.
 
 ## Configuration
 
