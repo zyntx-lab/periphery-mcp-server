@@ -12,12 +12,37 @@ A [Model Context Protocol (MCP)](https://modelcontextprotocol.io) server that wr
 
 ## Quick Start
 
+**Using Homebrew (Recommended):**
+
+```bash
+# 1. Install Periphery
+brew install peripheryapp/periphery/periphery
+
+# 2. Install Periphery MCP Server
+brew tap zyntx-lab/tap
+brew install periphery-mcp-server
+
+# 3. Configure Claude Desktop
+# Edit: ~/Library/Application Support/Claude/claude_desktop_config.json
+# Add:
+#   "periphery": {
+#     "command": "/opt/homebrew/bin/periphery-mcp-server"
+#   }
+
+# 4. Restart Claude Desktop (Cmd+Q then reopen)
+
+# 5. Test it
+# In Claude Desktop: "Check if Periphery is installed"
+```
+
+**From Source:**
+
 ```bash
 # 1. Install Periphery
 brew install peripheryapp/periphery/periphery
 
 # 2. Clone and build this server
-git clone https://github.com/YOUR_USERNAME/periphery-mcp-server.git
+git clone https://github.com/zyntx-lab/periphery-mcp-server.git
 cd periphery-mcp-server
 swift build -c release
 
@@ -54,25 +79,46 @@ Or download from [Periphery releases](https://github.com/peripheryapp/periphery/
 
 ## Installation
 
-### Step 1: Build from Source
+### Option 1: Homebrew (Recommended)
+
+```bash
+# Add the tap
+brew tap zyntx-lab/tap
+
+# Install the server
+brew install periphery-mcp-server
+
+# Verify installation
+which periphery-mcp-server
+# Should output: /opt/homebrew/bin/periphery-mcp-server
+```
+
+### Option 2: Download from GitHub Releases
+
+Download the latest binary from [Releases](https://github.com/zyntx-lab/periphery-mcp-server/releases):
+
+```bash
+# Download and install
+curl -L https://github.com/zyntx-lab/periphery-mcp-server/releases/download/v1.0.0/periphery-mcp-server \
+  -o /usr/local/bin/periphery-mcp-server
+chmod +x /usr/local/bin/periphery-mcp-server
+
+# Verify installation
+which periphery-mcp-server
+# Should output: /usr/local/bin/periphery-mcp-server
+```
+
+### Option 3: Build from Source
 
 ```bash
 # Clone the repository
-it clone https://github.com/zyntx-lab/periphery-mcp-server.git
+git clone https://github.com/zyntx-lab/periphery-mcp-server.git
 cd periphery-mcp-server
 
 # Build release version
 swift build -c release
 
-# The executable will be at .build/release/periphery-mcp-server
-```
-
-### Step 2: Install the Binary (Choose One)
-
-#### Option A: Install to /usr/local/bin (Recommended)
-
-```bash
-# Copy to system path (requires password)
+# Install to system path (requires password)
 sudo cp .build/release/periphery-mcp-server /usr/local/bin/
 sudo chmod +x /usr/local/bin/periphery-mcp-server
 
@@ -81,13 +127,9 @@ which periphery-mcp-server
 # Should output: /usr/local/bin/periphery-mcp-server
 ```
 
-#### Option B: Use Direct Path
+### Option 4: Install from MCP Registry
 
-Skip system installation and use the full path in your configuration (see Configuration section below).
-
-### Alternative: Download Pre-built Binary
-
-Download the latest binary from [Releases](https://github.com/zyntx-lab/periphery-mcp-server/releases) and place it in your PATH and follow option A or B above.
+The server is also available on the [MCP Registry](https://registry.modelcontextprotocol.io). Use your MCP-compatible client to install it directly.
 
 ## Configuration
 
@@ -98,6 +140,18 @@ Download the latest binary from [Releases](https://github.com/zyntx-lab/peripher
 The config file is at: `~/Library/Application Support/Claude/claude_desktop_config.json`
 
 #### Step 2: Edit the Configuration
+
+**If you installed via Homebrew:**
+
+```json
+{
+  "mcpServers": {
+    "periphery": {
+      "command": "/opt/homebrew/bin/periphery-mcp-server"
+    }
+  }
+}
+```
 
 **If you installed to /usr/local/bin:**
 
@@ -522,9 +576,20 @@ MIT License - see [LICENSE](LICENSE) file for details.
 - [Periphery](https://github.com/peripheryapp/periphery) - The underlying code analysis tool
 - [Model Context Protocol](https://modelcontextprotocol.io) - The protocol specification
 - [MCP Swift SDK](https://github.com/modelcontextprotocol/swift-sdk) - Official Swift SDK for MCP
+- [MCP Registry](https://registry.modelcontextprotocol.io) - Official MCP server registry
+- [MCP Community Servers](https://github.com/modelcontextprotocol/servers) - Collection of community MCP servers
+
+## Distribution Channels
+
+This server is available through multiple channels:
+
+- **MCP Registry**: [registry.modelcontextprotocol.io](https://registry.modelcontextprotocol.io)
+- **Homebrew Tap**: [github.com/zyntx-lab/homebrew-tap](https://github.com/zyntx-lab/homebrew-tap)
+- **GitHub Releases**: [github.com/zyntx-lab/periphery-mcp-server/releases](https://github.com/zyntx-lab/periphery-mcp-server/releases)
+- **Community Servers**: Listed in [modelcontextprotocol/servers](https://github.com/modelcontextprotocol/servers)
 
 ## Support
 
-- **Issues**: [GitHub Issues](https://github.com/YOUR_USERNAME/periphery-mcp-server/issues)
+- **Issues**: [GitHub Issues](https://github.com/zyntx-lab/periphery-mcp-server/issues)
 - **Periphery Docs**: [Periphery Guide](https://github.com/peripheryapp/periphery)
 - **MCP Docs**: [MCP Specification](https://spec.modelcontextprotocol.io)
