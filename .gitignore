@@ -16,3 +16,29 @@ Package.resolved
 
 # Build artifacts
 periphery-mcp-server-*.tar.gz
+
+# Sensitive files - tokens, credentials, secrets
+.env
+.env.*
+*.pem
+*.key
+*.p8
+*.p12
+*.cer
+*.mobileprovision
+credentials.json
+secrets.json
+auth.json
+token.txt
+.token
+.github-token
+.mcp-token
+
+# MCP publisher config (may contain auth tokens)
+.mcp-publisher/
+.publisher-cache/
+publisher-config.json
+
+# Apple code signing
+*.provisionprofile
+exportOptions.plist
