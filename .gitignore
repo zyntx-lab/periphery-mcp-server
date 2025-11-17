@@ -34,6 +34,11 @@ token.txt
 .github-token
 .mcp-token
 
+# MCP registry publisher tokens
+.mcpregistry_registry_token
+.mcpregistry_github_token
+.mcpregistry_*
+
 # MCP publisher config (may contain auth tokens)
 .mcp-publisher/
 .publisher-cache/
