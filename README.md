@@ -38,7 +38,7 @@ The executable will be at `.build/release/periphery-mcp-server`.
 
 ### Option 2: Install Binary
 
-Download the latest binary from [Releases](https://github.com/YOUR_USERNAME/periphery-mcp-server/releases) and place it in your PATH.
+Download the latest binary from [Releases](https://github.com/zyntx-lab/periphery-mcp-server/releases) and place it in your PATH.
 
 ## Configuration
 
