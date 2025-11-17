@@ -35,8 +35,9 @@ echo ""
 echo "📝 Updating server.json with hash..."
 cat > server.json << EOF
 {
-  "\$schema": "https://static.modelcontextprotocol.io/schemas/2025-09-29/server.schema.json",
+  "\$schema": "https://static.modelcontextprotocol.io/schemas/2025-10-17/server.schema.json",
   "name": "io.github.zyntx-lab/periphery-mcp-server",
+  "title": "Periphery Code Audit",
   "description": "Swift code analysis with Periphery - detect unused code and improve code quality",
   "version": "${VERSION}",
   "repository": {
@@ -58,7 +59,6 @@ cat > server.json << EOF
   ],
   "_meta": {
     "io.modelcontextprotocol.registry/publisher-provided": {
-      "displayName": "Periphery Code Audit",
       "license": "MIT",
       "categories": ["code-analysis", "development-tools"],
       "capabilities": {
