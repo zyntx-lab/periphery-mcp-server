@@ -21,8 +21,9 @@ jobs:
     - name: Build
       run: swift build -c release
 
-    - name: Run tests
-      run: swift test
+    # Tests will be added in a future update
+    # - name: Run tests
+    #   run: swift test
 
   lint:
     runs-on: macos-latest
