@@ -11,6 +11,7 @@ jobs:
     runs-on: macos-latest
     permissions:
       contents: write
+      id-token: write
 
     steps:
       - name: Checkout code
@@ -163,12 +164,8 @@ jobs:
       - name: Install mcp-publisher
         run: brew install mcp-publisher
 
-      - name: Authenticate with MCP Registry
-        run: |
-          # Authenticate using GitHub token from the action context
-          mcp-publisher login github
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-
       - name: Publish to MCP Registry
-        run: mcp-publisher publish
+        run: |
+          # Use github-oidc authentication (works in GitHub Actions)
+          mcp-publisher login github-oidc
+          mcp-publisher publish
