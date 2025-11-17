@@ -10,6 +10,34 @@ A [Model Context Protocol (MCP)](https://modelcontextprotocol.io) server that wr
 - **Flexible Scanning** - Support for Xcode projects and Swift Packages
 - **Advanced Options** - Full control over Periphery scan configurations
 
+## Quick Start
+
+```bash
+# 1. Install Periphery
+brew install peripheryapp/periphery/periphery
+
+# 2. Clone and build this server
+git clone https://github.com/YOUR_USERNAME/periphery-mcp-server.git
+cd periphery-mcp-server
+swift build -c release
+
+# 3. Install to system path
+sudo cp .build/release/periphery-mcp-server /usr/local/bin/
+sudo chmod +x /usr/local/bin/periphery-mcp-server
+
+# 4. Configure Claude Desktop
+# Edit: ~/Library/Application Support/Claude/claude_desktop_config.json
+# Add:
+#   "periphery": {
+#     "command": "/usr/local/bin/periphery-mcp-server"
+#   }
+
+# 5. Restart Claude Desktop (Cmd+Q then reopen)
+
+# 6. Test it
+# In Claude Desktop: "Check if Periphery is installed"
+```
+
 ## Prerequisites
 
 - macOS 13.0 or later
@@ -26,37 +54,129 @@ Or download from [Periphery releases](https://github.com/peripheryapp/periphery/
 
 ## Installation
 
-### Option 1: Build from Source
+### Step 1: Build from Source
 
 ```bash
+# Clone the repository
 git clone https://github.com/YOUR_USERNAME/periphery-mcp-server.git
 cd periphery-mcp-server
+
+# Build release version
 swift build -c release
+
+# The executable will be at .build/release/periphery-mcp-server
 ```
 
-The executable will be at `.build/release/periphery-mcp-server`.
+### Step 2: Install the Binary (Choose One)
 
-### Option 2: Install Binary
+#### Option A: Install to /usr/local/bin (Recommended)
 
-Download the latest binary from [Releases](https://github.com/YOUR_USERNAME/periphery-mcp-server/releases) and place it in your PATH.
+```bash
+# Copy to system path (requires password)
+sudo cp .build/release/periphery-mcp-server /usr/local/bin/
+sudo chmod +x /usr/local/bin/periphery-mcp-server
+
+# Verify installation
+which periphery-mcp-server
+# Should output: /usr/local/bin/periphery-mcp-server
+```
+
+#### Option B: Use Direct Path
+
+Skip system installation and use the full path in your configuration (see Configuration section below).
+
+### Alternative: Download Pre-built Binary
+
+Download the latest binary from [Releases](https://github.com/YOUR_USERNAME/periphery-mcp-server/releases) and follow Option A or B above.
 
 ## Configuration
 
 ### Claude Desktop
 
-Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
+#### Step 1: Locate Your Config File
+
+The config file is at: `~/Library/Application Support/Claude/claude_desktop_config.json`
+
+#### Step 2: Edit the Configuration
+
+**If you installed to /usr/local/bin:**
 
 ```json
 {
   "mcpServers": {
     "periphery": {
-      "command": "/path/to/periphery-mcp-server"
+      "command": "/usr/local/bin/periphery-mcp-server"
     }
   }
 }
 ```
 
-### VS Code
+**If you're using the build directory directly:**
+
+```json
+{
+  "mcpServers": {
+    "periphery": {
+      "command": "/FULL/PATH/TO/periphery-mcp-server/.build/release/periphery-mcp-server"
+    }
+  }
+}
+```
+
+**If you already have other MCP servers configured:**
+
+```json
+{
+  "mcpServers": {
+    "xcode": {
+      "command": "node",
+      "args": ["/path/to/xcode-mcp-server/dist/index.js"]
+    },
+    "periphery": {
+      "command": "/usr/local/bin/periphery-mcp-server"
+    }
+  }
+}
+```
+
+#### Step 3: Restart Claude Desktop
+
+**Important:** You must completely quit and restart Claude Desktop for changes to take effect.
+
+1. Quit Claude Desktop: Press `Cmd+Q` or use Claude Desktop → Quit
+2. Wait a few seconds
+3. Reopen Claude Desktop
+
+#### Step 4: Verify It's Working
+
+Open a new conversation in Claude Desktop and try:
+
+```
+"Check if Periphery is installed"
+```
+
+If configured correctly, Claude will use the `check_periphery_installed` tool and respond with installation status.
+
+### Testing with MCP Inspector
+
+Before configuring Claude Desktop, you can test the server with the MCP Inspector:
+
+```bash
+# Install MCP Inspector (if not already installed)
+npm install -g @modelcontextprotocol/inspector
+
+# Test your server
+npx @modelcontextprotocol/inspector /usr/local/bin/periphery-mcp-server
+
+# Or if using build directory
+npx @modelcontextprotocol/inspector /path/to/periphery-mcp-server/.build/release/periphery-mcp-server
+```
+
+The Inspector will open in your browser where you can test all tools interactively.
+
+### Other Editors
+
+#### VS Code
 
 Add to `.vscode/mcp.json`:
 
@@ -65,13 +185,13 @@ Add to `.vscode/mcp.json`:
   "mcpServers": {
     "periphery": {
       "type": "stdio",
-      "command": "/path/to/periphery-mcp-server"
+      "command": "/usr/local/bin/periphery-mcp-server"
     }
   }
 }
 ```
 
-### Cursor
+#### Cursor
 
 Add to `.cursor/mcp.json`:
 
@@ -80,7 +200,7 @@ Add to `.cursor/mcp.json`:
   "mcpServers": {
     "periphery": {
       "type": "stdio",
-      "command": "/path/to/periphery-mcp-server"
+      "command": "/usr/local/bin/periphery-mcp-server"
     }
   }
 }
@@ -190,16 +310,58 @@ Advanced scanning with custom Periphery flags.
 
 ### With Claude Desktop
 
+Once configured, you can have natural conversations with Claude about your code:
+
+**Check Installation:**
 ```
-You: "Check if I have any unused code in my iOS project"
+You: "Check if Periphery is installed"
 
-Claude: [Uses check_periphery_installed, then scan_project]
+Claude: [Uses check_periphery_installed]
+"Yes, Periphery is installed at /usr/local/bin/periphery
+Version: 2.18.0"
+```
+
+**Scan a Project:**
+```
+You: "Scan my iOS project at ~/Projects/MyApp/MyApp.xcodeproj for unused code"
+
+Claude: [Uses scan_project]
 "I found 15 unused declarations in your project:
-- 5 unused classes
-- 8 unused functions
-- 2 unused imports
 
-Here are the details..."
+Classes (5):
+- UnusedViewController at MyApp/UnusedViewController.swift:10
+- OldDataManager at MyApp/Models/OldDataManager.swift:25
+...
+
+Functions (8):
+- helperFunction at Utils/Helpers.swift:42
+...
+
+Imports (2):
+- UIKit in DataModel.swift:1
+..."
+```
+
+**Find Redundant Public:**
+```
+You: "Check which public declarations could be made internal in ~/Projects/MyFramework"
+
+Claude: [Uses find_redundant_public]
+"Found 12 public declarations that are only used internally and could be made internal:
+- public class InternalHelper (only used within the framework)
+- public func formatDate() (only called from within the module)
+..."
+```
+
+**Analyze Unused Imports:**
+```
+You: "Find unused imports in my Swift package"
+
+Claude: [Uses analyze_unused_imports]
+"Found 8 unused imports that can be safely removed:
+- Foundation in Models/User.swift (not using any Foundation APIs)
+- Combine in ViewModels/ProfileViewModel.swift (Combine is imported but not used)
+..."
 ```
 
 ### With Custom Configuration
@@ -227,6 +389,38 @@ You: "Scan my project using the custom config"
 
 ## Troubleshooting
 
+### Server Not Appearing in Claude Desktop
+
+**Symptoms:** Claude doesn't recognize Periphery tools after configuration
+
+**Solutions:**
+
+1. **Verify config file syntax:**
+   ```bash
+   # Check for JSON syntax errors
+   cat ~/Library/Application\ Support/Claude/claude_desktop_config.json | python3 -m json.tool
+   ```
+
+2. **Check the binary path is correct:**
+   ```bash
+   # Test that the binary exists and runs
+   /usr/local/bin/periphery-mcp-server
+   # Or your custom path
+   /path/to/.build/release/periphery-mcp-server
+   ```
+
+3. **Completely restart Claude Desktop:**
+   - Press `Cmd+Q` to quit (not just close the window)
+   - Wait 5 seconds
+   - Reopen Claude Desktop
+   - Start a new conversation (old conversations won't see new servers)
+
+4. **Check Claude Desktop logs:**
+   ```bash
+   # View logs for errors
+   tail -f ~/Library/Logs/Claude/mcp*.log
+   ```
+
 ### Periphery Not Found
 
 If you get "Periphery is not installed":
@@ -234,6 +428,29 @@ If you get "Periphery is not installed":
 1. Install Periphery: `brew install peripheryapp/periphery/periphery`
 2. Verify installation: `which periphery`
 3. Restart Claude Desktop/VS Code/Cursor
+4. Try the `check_periphery_installed` tool again
+
+### MCP Inspector Connection Errors
+
+If the Inspector can't connect to the server:
+
+1. **Verify the server runs:**
+   ```bash
+   # Server should wait for input, not exit immediately
+   /usr/local/bin/periphery-mcp-server
+   # Press Ctrl+C to exit
+   ```
+
+2. **Check for errors:**
+   ```bash
+   # Run with verbose output
+   /usr/local/bin/periphery-mcp-server 2>&1 | tee server.log
+   ```
+
+3. **Use the absolute path:**
+   ```bash
+   npx @modelcontextprotocol/inspector $(which periphery-mcp-server)
+   ```
 
 ### Scan Timeout
 
@@ -242,14 +459,41 @@ Default timeout is 5 minutes. For large projects:
 1. Use `scan_with_config` with a focused configuration
 2. Scan specific targets instead of the entire project
 3. Use `--index-store-path` to reuse build artifacts
+4. Build your project in Xcode first to generate the index
 
-### No Results
+### No Results or Empty Scan
 
 Periphery requires a compiled project with an index store:
 
-1. Build your project first in Xcode
-2. Ensure schemes are shared (Xcode → Product → Scheme → Manage Schemes → Shared)
-3. Check that the project path is correct
+1. **Build your project first in Xcode** (Cmd+B)
+2. **Ensure schemes are shared:**
+   - Xcode → Product → Scheme → Manage Schemes
+   - Check the "Shared" checkbox for your scheme
+3. **Verify the project path:**
+   ```bash
+   # For Xcode projects
+   ls /path/to/YourProject.xcodeproj
+
+   # For Swift Packages
+   ls /path/to/Package.swift
+   ```
+4. **Check Periphery can access the project:**
+   ```bash
+   # Test Periphery directly
+   periphery scan --project /path/to/YourProject.xcodeproj --schemes YourScheme
+   ```
+
+### Permission Denied
+
+If you get "Permission denied" when running the server:
+
+```bash
+# Make the binary executable
+chmod +x /usr/local/bin/periphery-mcp-server
+
+# Or for build directory
+chmod +x .build/release/periphery-mcp-server
+```
 
 ## Architecture
 

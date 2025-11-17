@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "periphery": {
+      "command": "/usr/local/bin/periphery-mcp-server"
+    }
+  }
+}

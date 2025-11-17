@@ -57,5 +57,11 @@ struct PeripheryMCPServerMain {
         // Start the server with stdio transport
         let transport = StdioTransport()
         try await server.start(transport: transport)
+
+        // Keep the server running indefinitely
+        // The server will handle requests until the process is terminated
+        await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
+            // Never resume - keeps the server alive
+        }
     }
 }

@@ -9,7 +9,9 @@ struct GetPeripheryVersionTool {
     static let schema: Tool = Tool(
         name: name,
         description: description,
-        inputSchema: .object([:])
+        inputSchema: .object([
+            "type": .string("object")
+        ])
     )
 
     static func execute(arguments: [String: Any]) async -> String {
