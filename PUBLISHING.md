@@ -17,9 +17,31 @@ This guide explains how to publish the Periphery MCP Server to the official MCP 
 
 3. **Write access** to the `zyntx-lab/periphery-mcp-server` repository
 
-## Quick Publish
+## Publishing Methods
 
-We've created an automated script that handles most of the process:
+### Recommended: GitHub Actions (For Organization Namespace)
+
+Since `io.github.zyntx-lab` is an organization namespace, the best way to publish is via GitHub Actions. We've created an automated workflow:
+
+1. **Push a version tag** to trigger the workflow:
+   ```bash
+   git tag v1.0.0
+   git push origin v1.0.0
+   ```
+
+2. **Or trigger manually** from GitHub:
+   - Go to Actions → "Publish to MCP Registry" → "Run workflow"
+
+The workflow will:
+- Build the release binary
+- Calculate SHA-256 hash
+- Update `server.json`
+- Create GitHub release
+- Publish to MCP Registry (with organization permissions)
+
+### Alternative: Manual Script (For Personal Testing)
+
+For local testing or personal namespace, use the publish script:
 
 ```bash
 ./publish.sh
@@ -31,6 +53,8 @@ This script will:
 3. Update `server.json` with the correct hash
 4. Create a GitHub release with the binary
 5. Provide next steps for MCP registry submission
+
+**Note:** Manual publishing to organization namespaces requires GitHub Action context.
 
 ## Manual Publishing Steps
 
@@ -148,11 +172,26 @@ The `server.json` file defines how your server appears in the registry:
 
 ## Namespace Authentication
 
-Since we're using the `io.github.zyntx-lab` namespace:
+The `io.github.zyntx-lab` namespace requires special handling:
 
-1. The publisher CLI will prompt you to authenticate with GitHub
-2. You must be logged in as a member of the `zyntx-lab` organization
-3. OAuth flow will verify your access
+### Why GitHub Actions?
+
+The MCP registry's `io.github.*` namespace authentication is tied to GitHub **user accounts**, not organizations. Even if you're an admin of the zyntx-lab organization:
+
+- Local `mcp-publisher login github` grants permission for `io.github.{your-username}/*`
+- It does NOT grant permission for `io.github.zyntx-lab/*`
+
+**Solution:** GitHub Actions running in the zyntx-lab repository have the organization context and can publish to `io.github.zyntx-lab/*`.
+
+### Manual Publishing Limitation
+
+If you try to publish manually, you'll get:
+```
+Error 403: You do not have permission to publish this server.
+You have permission to publish: io.github.{your-username}/*
+```
+
+This is expected behavior for organization namespaces.
 
 ## Updating an Existing Release
 
