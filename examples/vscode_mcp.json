@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "periphery": {
+      "type": "stdio",
+      "command": "/usr/local/bin/periphery-mcp-server"
+    }
+  }
+}

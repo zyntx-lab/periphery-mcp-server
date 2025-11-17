@@ -1,0 +1,44 @@
+# Example Periphery Configuration
+# Save this as .periphery.yml in your project root
+
+# For Xcode Projects
+project: MyApp.xcodeproj
+schemes:
+  - MyApp
+  - MyAppKit
+targets:
+  - MyApp
+  - MyAppKit
+
+# For Swift Packages, use this instead:
+# workspace: MyWorkspace.xcworkspace
+# schemes:
+#   - MyPackage
+
+# Output settings
+format: json
+verbose: false
+
+# Retention rules
+retain_public: false
+retain_objc_accessible: true
+retain_objc_annotated: false
+retain_unused_protocol_func_params: false
+retain_assign_only_properties: true
+retain_assign_only_property_types: []
+
+# Analysis options
+disable_unused_import_analysis: false
+disable_redundant_public_analysis: false
+
+# File exclusions
+exclude:
+  - "*/Generated/*"
+  - "*/Pods/*"
+  - "*/Tests/*"
+
+# Index store
+# index_store_path: .build/index/Debug
+
+# Report options
+# baseline: .periphery.baseline.json

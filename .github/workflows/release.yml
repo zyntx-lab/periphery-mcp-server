@@ -1,0 +1,44 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-and-release:
+    runs-on: macos-13
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Select Xcode
+      run: sudo xcode-select -s /Applications/Xcode_15.0.app
+
+    - name: Build Release (arm64)
+      run: swift build -c release --arch arm64
+
+    - name: Build Release (x86_64)
+      run: swift build -c release --arch x86_64
+
+    - name: Create Universal Binary
+      run: |
+        lipo -create \
+          .build/arm64-apple-macosx/release/periphery-mcp-server \
+          .build/x86_64-apple-macosx/release/periphery-mcp-server \
+          -output periphery-mcp-server
+        chmod +x periphery-mcp-server
+
+    - name: Create Archive
+      run: |
+        tar -czf periphery-mcp-server-${{ github.ref_name }}-macos-universal.tar.gz periphery-mcp-server README.md LICENSE
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          periphery-mcp-server-${{ github.ref_name }}-macos-universal.tar.gz
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
