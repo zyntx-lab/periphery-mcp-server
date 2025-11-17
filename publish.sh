@@ -41,7 +41,7 @@ cat > server.json << EOF
   "description": "Swift code analysis with Periphery - detect unused code and improve code quality",
   "version": "${VERSION}",
   "repository": {
-    "type": "git",
+    "source": "github",
     "url": "https://github.com/${REPO}"
   },
   "websiteUrl": "https://github.com/${REPO}",
