@@ -42,7 +42,7 @@ cat > server.json << EOF
   "version": "${VERSION}",
   "repository": {
     "type": "git",
-    "url": "https://github.com/${REPO}.git"
+    "url": "https://github.com/${REPO}"
   },
   "websiteUrl": "https://github.com/${REPO}",
   "packages": [

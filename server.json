@@ -6,7 +6,7 @@
   "version": "1.0.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/zyntx-lab/periphery-mcp-server.git"
+    "url": "https://github.com/zyntx-lab/periphery-mcp-server"
   },
   "websiteUrl": "https://github.com/zyntx-lab/periphery-mcp-server",
   "packages": [
